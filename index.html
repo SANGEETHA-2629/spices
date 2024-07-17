@@ -6,11 +6,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>spices</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    </script>
+    <script type="text/javascript">
+        (function () {
+            emailjs.init({
+                publicKey: "RIMJm6XhoDCeDClyE",
+            });
+        })();
+
+        function sendmail() {
+            var name = document.getElementById("name").value;
+            var email = document.getElementById("email").value;
+            var message = document.getElementById("message").value;
+
+            var templateParams = {
+                name: name,
+                email: email,
+                message: message,
+            };
+
+            emailjs.send('service_5nzwoce', 'template_n0k15j1', templateParams)
+                .then(function (response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    window.alert("Sent successfully!");
+                }, function (error) {
+                    console.log('FAILED...', error);
+                    window.alert("Failed to send");
+                });
+        }
+
+    </script>
 </head>
 
 <body>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, getRedirectResult, signInWithRedirect } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDojLrYa1DFuPTOkvqQE6tlrRRCLWpFYn0",
+            authDomain: "spices-98cda.firebaseapp.com",
+            projectId: "spices-98cda",
+            storageBucket: "spices-98cda.appspot.com",
+            messagingSenderId: "566320274475",
+            appId: "1:566320274475:web:489c4fdea2853fc492de6e"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        // Initialize Firebase Authentication and get a reference to the service
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+
+        login.addEventListener("click", (e) => {
+            // Initiates the sign-in process with Google using Firebase Authentication
+            signInWithRedirect(auth, provider);
+
+            // After the redirection completes, this function retrieves the result
+            getRedirectResult(auth)
+                .then((result) => {
+                    // This gives you a Google Access Token. You can use it to access Google APIs.
+                    const credential = GoogleAuthProvider.credentialFromResult(result);
+                    const token = credential.accessToken;
+
+                    // The signed-in user info.
+                    const user = result.user;
+
+                    // Redirect to the home page after successful sign-in
+                    // Replace with your home page URL
+
+                    // IdP data available using getAdditionalUserInfo(result)
+                    // ...
+
+                }).catch((error) => {
+                    // Handle Errors here.
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+
+                    // If available, extract the email of the user's account used during sign-in
+                    const email = error.customData ? error.customData.email : null;
+
+                    // The AuthCredential type that was used.
+                    const credential = GoogleAuthProvider.credentialFromError(error);
+
+                    // Handle specific errors or logging as needed.
+                    // ...
+                });
+        });
+
+
+    </script>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark" id="navbar">
         <div class="container-fluid">
@@ -20,7 +118,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mx-auto">
+                <ul class="navbar-nav mx-auto gap-5">
                     <li class="nav-item">
                         <a class="nav-link" href="#home">Home</a>
                     </li>
@@ -34,7 +132,8 @@
                         <a class="nav-link" href="#contact">Contact</a>
                     </li>
                 </ul>
-                <button class="btn p-2 my-lg-0 my-2">Sign In</button>
+                <button class="btn p-2 my-lg-0 my-2" id="login">Sign In</button>
+
             </div>
     </nav>
 
@@ -80,7 +179,7 @@
         <div class="container m-5">
             <h1 class="text-center my-5">OUR PRODUCTS</h1>
             <div class="row">
-                <div class="col-lg-4 col-md-4 col-12">
+                <div class="col-lg-3 col-md-4 col-12">
                     <div class="card">
                         <img src="product 1 img.webp" class="card-img-top">
                         <div class="card-body text-center">
@@ -90,7 +189,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-4 col-12">
+                <div class="col-lg-3 col-md-4 col-12">
+                    <div class="card">
+                        <img src="product 1 img.webp" class="card-img-top">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Turmeric</h5>
+
+                            <a href="#" class="btn signin">Add To Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-12">
                     <div class="card">
                         <img src="product 2 img.jpg" class="card-img-top">
                         <div class="card-body text-center">
@@ -100,38 +209,49 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-4 col-12">
+                <div class="col-lg-3 col-md-4 col-12">
                     <div class="card">
                         <img src="product 3 img.jpg" class="card-img-top">
                         <div class="card-body text-center">
-                            <h5 class="card-title">Coriander Powder</h5>
+                            <h5 class="card-title">Coriander</h5>
 
                             <a href="#" class="btn signin">Add To Cart</a>
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
-                    <div class="col-lg-4 col-md-4 col-12">
+                    <div class="col-lg-3 col-md-4 col-12">
                         <div class="card">
                             <img src="product 4 img" class="card-img-top">
                             <div class="card-body text-center">
-                                <h5 class="card-title">Black pepper powder</h5>
+                                <h5 class="card-title">Black pepper</h5>
 
                                 <a href="#" class="btn signin">Add To Cart</a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-4 col-12">
+                    <div class="col-lg-3 col-md-4 col-12">
+                        <div class="card">
+                            <img src="product 10 img" class="card-img-top">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Black pepper</h5>
+
+                                <a href="#" class="btn signin">Add To Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-12">
                         <div class="card">
                             <img src="product 5 ig.jpg" class="card-img-top">
                             <div class="card-body text-center">
-                                <h5 class="card-title">Cinnamon powder </h5>
+                                <h5 class="card-title">Cinnamon</h5>
 
                                 <a href="#" class="btn signin">Add To Cart</a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-4 col-12">
+                    <div class="col-lg-3 col-md-4 col-12">
                         <div class="card">
                             <img src="product 6 img.jpg" class="card-img-top">
                             <div class="card-body text-center">
@@ -142,7 +262,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-4 col-md-4 col-12">
+                        <div class="col-lg-3 col-md-4 col-12">
                             <div class="card">
                                 <img src="product 7 img.jpg" class="card-img-top">
                                 <div class="card-body text-center">
@@ -152,7 +272,17 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-4 col-12">
+                        <div class="col-lg-3 col-md-4 col-12">
+                            <div class="card">
+                                <img src="product 7 img.jpg" class="card-img-top">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Fenugreek</h5>
+
+                                    <a href="#" class="btn signin">Add To Cart</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-12">
                             <div class="card">
                                 <img src="product 8 img.jpg" class="card-img-top">
                                 <div class="card-body text-center">
@@ -162,7 +292,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-4 col-12">
+                        <div class="col-lg-3 col-md-4 col-12">
                             <div class="card">
                                 <img src="product 9 img.jpg" class="card-img-top">
                                 <div class="card-body text-center">
@@ -182,20 +312,28 @@
                 <div class="col-lg-6 col-md-6 col-12">
                     <img src="contact img.jpg" class="img-fluid h-100">
                 </div>
-                <div class="col-lg-6 col-md-6 col-12 mt-5">
+                <div class="col-lg-6 col-md-6 col-12 mt-2">
                     <h1>CONTACT US</h1>
                     <form>
-                        <input type="text" class="form-control" placeholder="Enter your name">
-                        <input type="email" class="form-control" placeholder="Enter your mail">
-                        <textarea class="form-control">Enter your Message</textarea>
-                        <button class="btn signin">Send Message</button>
+                        <input type="text" id="name" class="form-control" placeholder="Enter your name">
+                        <input type="email" id="email" class="form-control" placeholder="Enter your mail">
+                        <textarea class="form-control" id="message" placeholder="Enter your Message"></textarea>
+
                     </form>
+                    <button class="btn signin w-50" onclick="sendmail()">Send Message</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer>Copyrights @frontend 2021</footer>
+    <footer>Copyrights @frontend 2024</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+        integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+        crossorigin="anonymous"></script>
 
 
 </body>
